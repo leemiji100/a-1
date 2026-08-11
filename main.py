@@ -137,6 +137,38 @@ def show_detail():
     print("─" * 30)
 
 
+def toggle_favorite():
+    print("\n=== 즐겨찾기 관리 ===")
+    num = input("프롬프트 번호 입력: ")
+
+    try:
+        p = prompts[int(num) - 1]
+    except (ValueError, IndexError):
+        print("잘못된 번호입니다.")
+        return
+
+    p["favorite"] = not p["favorite"]
+
+    if p["favorite"]:
+        print(f"'{p['title']}' 프롬프트를 즐겨찾기에 추가했습니다!")
+    else:
+        print(f"'{p['title']}' 프롬프트를 즐겨찾기에서 해제했습니다!")
+
+
+def show_favorites():
+    print("\n=== 즐겨찾기 목록 ===")
+    favorites = [p for p in prompts if p["favorite"]]
+
+    if len(favorites) == 0:
+        print("즐겨찾기한 프롬프트가 없습니다.")
+        return
+
+    for i, p in enumerate(favorites, 1):
+        print(f"{i}. [{p['category']}] {p['title']} ⭐")
+
+    print(f"\n총 {len(favorites)}개의 즐겨찾기")
+
+
 while True:
     show_menu()
     choice = input("선택: ")
@@ -154,5 +186,9 @@ while True:
         search_prompt()
     elif choice == "5":
         show_detail()
+    elif choice == "6":
+        toggle_favorite()
+    elif choice == "7":
+        show_favorites()
     else:
         print(f"{choice}번을 선택하셨습니다. (아직 기능 미구현)")
